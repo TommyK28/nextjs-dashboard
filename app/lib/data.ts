@@ -9,7 +9,15 @@ import {
 } from "./definitions";
 import { formatCurrency } from "./utils";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+const connectionString = process.env.POSTGRES_URL;
+
+if (!connectionString) {
+    throw new Error(
+        "Missing POSTGRES_URL environment variable. Configure it in Vercel.",
+    );
+}
+
+const sql = postgres(connectionString, { ssl: "require" });
 
 export async function fetchRevenue() {
     try {
